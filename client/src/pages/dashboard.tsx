@@ -22,8 +22,8 @@ export default function Dashboard() {
         <header className="smartflow-header border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-white">SmartFlow Dashboard</h2>
-              <p className="text-blue-100">Monitor your data collection and analysis</p>
+              <h2 className="text-2xl font-bold text-foreground">SmartFlow Dashboard</h2>
+              <p className="text-muted-foreground">Monitor your data collection and analysis</p>
             </div>
             <div className="flex items-center space-x-4">
               {/* Search */}

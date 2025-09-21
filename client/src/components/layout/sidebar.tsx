@@ -74,7 +74,7 @@ export default function Sidebar() {
       <div className="smartflow-gradient p-6 border-b border-border">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
-            <i className="fas fa-chart-line text-sf-blue text-lg"></i>
+            <i className="fas fa-chart-line text-lg" style={{color: 'hsl(215, 85%, 35%)'}}></i>
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">SmartFlow</h1>
