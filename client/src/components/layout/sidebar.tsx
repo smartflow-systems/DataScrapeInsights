@@ -89,10 +89,10 @@ export default function Sidebar() {
           {navigationItems.map((item) => (
             <Link key={item.id} href={item.href}>
               <a
-                className={`flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                   isActive(item.href)
                     ? "sidebar-active"
-                    : "text-muted-foreground hover:bg-secondary hover:text-secondary-foreground"
+                    : "text-muted-foreground hover:bg-gradient-to-r hover:from-sf-gold/10 hover:to-sf-gold-light/10 hover:text-sf-gold hover:border-sf-gold/20"
                 }`}
               >
                 <i className={`${item.icon} w-4 h-4`}></i>
@@ -107,7 +107,7 @@ export default function Sidebar() {
           <div className="space-y-2">
             {bottomItems.map((item) => (
               <Link key={item.id} href={item.href}>
-                <a className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-secondary-foreground transition-colors">
+                <a className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-gradient-to-r hover:from-sf-gold/10 hover:to-sf-gold-light/10 hover:text-sf-gold hover:border-sf-gold/20 transition-all duration-200">
                   <i className={`${item.icon} w-4 h-4`}></i>
                   <span>{item.label}</span>
                 </a>

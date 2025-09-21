@@ -123,4 +123,25 @@
     border-bottom: 1px solid var(--border);
     color: var(--foreground);
   }
+  
+  /* SmartFlow Gold Utility Classes */
+  .text-sf-gold {
+    color: var(--sf-gold);
+  }
+  
+  .bg-sf-gold {
+    background-color: var(--sf-gold);
+  }
+  
+  .border-sf-gold {
+    border-color: var(--sf-gold);
+  }
+  
+  .from-sf-gold {
+    --tw-gradient-from: var(--sf-gold);
+  }
+  
+  .to-sf-gold-light {
+    --tw-gradient-to: var(--sf-gold-light);
+  }
 }
