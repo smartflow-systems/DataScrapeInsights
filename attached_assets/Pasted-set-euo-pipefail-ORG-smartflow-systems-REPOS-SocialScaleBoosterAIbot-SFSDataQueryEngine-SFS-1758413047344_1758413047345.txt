@@ -1,0 +1,51 @@
+set -euo pipefail
+ORG="smartflow-systems"
+REPOS=("SocialScaleBoosterAIbot" "SFSDataQueryEngine" "SFSAPDemoCRM")
+PAT="${SFS_PAT:?Add SFS_PAT in env (GitHub → Org → Settings → Secrets)}"
+
+# run from your SmartFlowSite root (source of truth)
+SRC_HTML="public/index.html"
+SRC_CSS="public/smartflow-theme.css"
+tmp=$(mktemp -d)
+awk '/SF HERO START/{f=1} f; /SF HERO END/{f=0}' "$SRC_HTML" > "$tmp/hero.html"
+awk '/SF PROJECTS START/{f=1} f; /SF PROJECTS END/{f=0}' "$SRC_HTML" > "$tmp/projects.html"
+
+for R in "${REPOS[@]}"; do
+  rm -rf "$R"; git clone --depth=1 "https://x-access-token:${PAT}@github.com/${ORG}/${R}.git"
+  pushd "$R" >/dev/null
+  BR="feat/apply-all-$(date -u +%Y%m%dT%H%M%SZ)"; git checkout -b "$BR"
+
+  mkdir -p public
+  tgt_html="public/index.html"; tgt_css="public/smartflow-theme.css"
+  [ -f "$tgt_html" ] || echo "<!doctype html><html><head><link rel=stylesheet href=/smartflow-theme.css></head><body></body></html>" > "$tgt_html"
+  [ -f "$tgt_css" ]  || touch "$tgt_css"
+
+  # replace-or-insert HERO
+  if grep -q 'SF HERO START' "$tgt_html"; then
+    awk 'BEGIN{p=1}/SF HERO START/{p=0;print;system("cat '"$tmp/hero.html"'");next}/SF HERO END/{p=1}p' "$tgt_html" > "$tgt_html.tmp"
+    mv "$tgt_html.tmp" "$tgt_html"
+  else
+    sed -i "/<\/body>/i $(sed 's/[&/\]/\\&/g' "$tmp/hero.html")" "$tgt_html"
+  fi
+
+  # replace-or-insert PROJECTS
+  if grep -q 'SF PROJECTS START' "$tgt_html"; then
+    awk 'BEGIN{p=1}/SF PROJECTS START/{p=0;print;system("cat '"$tmp/projects.html"'");next}/SF PROJECTS END/{p=1}p' "$tgt_html" > "$tgt_html.tmp"
+    mv "$tgt_html.tmp" "$tgt_html"
+  else
+    sed -i "/<\/body>/i $(sed 's/[&/\]/\\&/g' "$tmp/projects.html")" "$tgt_html"
+  fi
+
+  # append any missing CSS tokens/blocks
+  grep -q -- '--sf-gold' "$tgt_css" || cat "$SRC_CSS" >> "$tgt_css"
+
+  git add -A
+  git commit -m "feat: apply SmartFlow hero + projects (auto)"
+  git push -u origin "$BR"
+
+  # open PR
+  curl -sS -X POST -H "Authorization: token ${PAT}" \
+    -d "{\"title\":\"Apply SmartFlow hero + projects\",\"head\":\"$BR\",\"base\":\"main\",\"body\":\"Auto-apply from SmartFlowSite\"}" \
+    "https://api.github.com/repos/${ORG}/${R}/pulls" | jq -r '.html_url'
+  popd >/dev/null
+done
