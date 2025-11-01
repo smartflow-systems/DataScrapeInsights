@@ -69,9 +69,9 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="w-64 bg-card border-r border-border flex flex-col">
+    <div className="w-64 glass-panel border-r border-border flex flex-col relative overflow-hidden">
       {/* Logo/Brand */}
-      <div className="smartflow-gradient p-6 border-b border-border">
+      <div className="smartflow-gradient p-6 border-b border-sf-gold/30 circuit-accent">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
             <i className="fas fa-chart-line text-lg" style={{color: 'hsl(215, 85%, 35%)'}}></i>
@@ -103,7 +103,7 @@ export default function Sidebar() {
         </div>
 
         {/* Bottom section */}
-        <div className="mt-8 pt-4 border-t border-border">
+        <div className="mt-8 pt-4 border-t border-sf-gold/20">
           <div className="space-y-2">
             {bottomItems.map((item) => (
               <Link key={item.id} href={item.href}>
@@ -118,7 +118,7 @@ export default function Sidebar() {
       </nav>
 
       {/* User Profile */}
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-sf-gold/30 circuit-accent">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 smartflow-gradient rounded-full flex items-center justify-center">
             <span className="text-white text-sm font-medium">SF</span>
