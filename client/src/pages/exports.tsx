@@ -91,14 +91,17 @@ export default function Exports() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background circuit-pattern">
       <Sidebar />
-      
+
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-card border-b border-border px-6 py-4">
+        <header className="smartflow-header px-6 py-4">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Data Exports</h2>
+            <h2 className="text-2xl font-bold text-foreground flex items-center">
+              <i className="fas fa-download text-sf-gold mr-3"></i>
+              Data Exports
+            </h2>
             <p className="text-muted-foreground">Export your data in various formats</p>
           </div>
         </header>

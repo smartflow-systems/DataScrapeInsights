@@ -14,15 +14,18 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background circuit-pattern">
       <Sidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="smartflow-header border-b border-border px-6 py-4">
+        <header className="smartflow-header px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">SmartFlow Dashboard</h2>
+              <h2 className="text-2xl font-bold text-foreground flex items-center">
+                <i className="fas fa-tachometer-alt text-sf-gold mr-3"></i>
+                SmartFlow Dashboard
+              </h2>
               <p className="text-muted-foreground">Monitor your data collection and analysis</p>
             </div>
             <div className="flex items-center space-x-4">

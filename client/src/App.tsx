@@ -11,6 +11,8 @@ import SocialMedia from "@/pages/social-media";
 import NLToSQL from "@/pages/nl-to-sql";
 import QueryHistory from "@/pages/query-history";
 import Exports from "@/pages/exports";
+import Settings from "@/pages/settings";
+import Help from "@/pages/help";
 import NotFound from "@/pages/not-found";
 
 // Theme context
@@ -55,6 +57,8 @@ function App() {
           <Route path="/nl-sql" component={NLToSQL} />
           <Route path="/queries" component={QueryHistory} />
           <Route path="/exports" component={Exports} />
+          <Route path="/settings" component={Settings} />
+          <Route path="/help" component={Help} />
           <Route component={NotFound} />
         </Switch>
         <Toaster />
