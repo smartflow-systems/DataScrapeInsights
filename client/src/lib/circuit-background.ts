@@ -51,11 +51,11 @@ export function initCircuitBackground(): () => void {
   let isVisible = true;
 
   const colors = {
-    path: 'rgba(230, 194, 0, 0.28)',       // Gold paths
-    pathGlow: 'rgba(255, 215, 0, 0.15)',   // Gold glow
+    path: 'rgba(230, 194, 0, 0.5)',        // Gold paths - more visible
+    pathGlow: 'rgba(255, 215, 0, 0.3)',    // Gold glow - brighter
     particle: '#FFD700',                    // Bright gold particles
-    node: 'rgba(255, 215, 0, 0.6)',        // Gold nodes
-    nodeGlow: 'rgba(255, 215, 0, 0.3)'     // Node glow
+    node: 'rgba(255, 215, 0, 0.9)',        // Gold nodes - brighter
+    nodeGlow: 'rgba(255, 215, 0, 0.5)'     // Node glow - stronger
   };
 
   let paths: Path[] = [];
@@ -95,7 +95,7 @@ export function initCircuitBackground(): () => void {
         cp1x, cp1y,
         cp2x, cp2y,
         endX, endY,
-        opacity: 0.3 + Math.random() * 0.4
+        opacity: 0.5 + Math.random() * 0.4
       });
     }
   }
@@ -127,8 +127,8 @@ export function initCircuitBackground(): () => void {
         pathIndex: pathIndex,
         progress: Math.random(),
         speed: 0.001 + Math.random() * 0.002,
-        size: 1 + Math.random() * 2,
-        opacity: 0.4 + Math.random() * 0.6
+        size: 1.5 + Math.random() * 2.5,
+        opacity: 0.7 + Math.random() * 0.3
       });
     }
   }
