@@ -3,7 +3,7 @@ import NLSQLInterface from "@/components/dashboard/nl-sql-interface";
 
 export default function NLToSQL() {
   return (
-    <div className="flex h-screen bg-background circuit-pattern">
+    <div className="flex h-screen circuit-pattern">
       <Sidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
