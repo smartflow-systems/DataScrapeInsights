@@ -43,10 +43,10 @@ export default function Settings() {
         <main className="flex-1 overflow-auto p-6">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* API Configuration */}
-            <Card className="sfs-glow-hover">
+            <Card className="smartflow-card sfs-glow-hover">
               <CardHeader className="circuit-accent">
-                <CardTitle>
-                  <i className="fas fa-key text-primary mr-2"></i>
+                <CardTitle className="flex items-center gap-2">
+                  <i className="fas fa-key text-sfs-gold-200"></i>
                   API Configuration
                 </CardTitle>
                 <CardDescription>
@@ -87,10 +87,10 @@ export default function Settings() {
             </Card>
 
             {/* Scraping Settings */}
-            <Card className="sfs-glow-hover">
+            <Card className="smartflow-card sfs-glow-hover">
               <CardHeader className="circuit-accent">
-                <CardTitle>
-                  <i className="fas fa-spider text-primary mr-2"></i>
+                <CardTitle className="flex items-center gap-2">
+                  <i className="fas fa-spider text-sfs-gold-200"></i>
                   Scraping Settings
                 </CardTitle>
                 <CardDescription>
@@ -155,15 +155,15 @@ export default function Settings() {
               </CardContent>
             </Card>
 
-            {/* Notifications */}
-            <Card className="sfs-glow-hover">
+            {/* Notifications & Automated Alerts */}
+            <Card className="smartflow-card sfs-glow-hover border-sfs-gold-200/30">
               <CardHeader className="circuit-accent">
-                <CardTitle>
-                  <i className="fas fa-bell text-primary mr-2"></i>
-                  Notifications
+                <CardTitle className="flex items-center gap-2">
+                  <i className="fas fa-bell text-sfs-gold-200"></i>
+                  Notifications & Automated Alerts
                 </CardTitle>
                 <CardDescription>
-                  Manage your notification preferences
+                  Configure intelligent monitoring and notification preferences
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -183,6 +183,67 @@ export default function Settings() {
 
                 <Separator />
 
+                <div className="p-4 rounded-lg bg-sfs-gold-200/10 border border-sfs-gold-200/20">
+                  <h4 className="text-sm font-semibold text-sfs-gold-200 mb-3 flex items-center gap-2">
+                    <i className="fas fa-robot"></i>
+                    Automated Alert Triggers
+                  </h4>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="error-threshold">High Error Rate Detection</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Alert when more than 3 operations fail
+                        </p>
+                      </div>
+                      <Switch id="error-threshold" defaultChecked />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="inactivity-alert">Inactivity Detection</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Alert when no data collection for 1+ hour
+                        </p>
+                      </div>
+                      <Switch id="inactivity-alert" defaultChecked />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="success-notif">Success Notifications</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Alert on successful data collection
+                        </p>
+                      </div>
+                      <Switch id="success-notif" defaultChecked />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="performance-alert">Performance Degradation</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Alert when queries take longer than 5 seconds
+                        </p>
+                      </div>
+                      <Switch id="performance-alert" />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="threshold-alert">Data Volume Thresholds</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Alert when daily scrapes exceed 1000
+                        </p>
+                      </div>
+                      <Switch id="threshold-alert" />
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="email-notif">Email Notifications</Label>
@@ -195,6 +256,16 @@ export default function Settings() {
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
+                    <Label htmlFor="browser-notif">Browser Notifications</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Show desktop notifications
+                    </p>
+                  </div>
+                  <Switch id="browser-notif" />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
                     <Label htmlFor="error-notif">Error Alerts</Label>
                     <p className="text-xs text-muted-foreground">
                       Notify when scrapers fail
@@ -202,14 +273,29 @@ export default function Settings() {
                   </div>
                   <Switch id="error-notif" defaultChecked />
                 </div>
+
+                <Separator />
+
+                <div>
+                  <Label htmlFor="alert-email">Alert Email Address</Label>
+                  <Input
+                    id="alert-email"
+                    type="email"
+                    placeholder="alerts@example.com"
+                    className="mt-2"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Receive automated alerts at this email address
+                  </p>
+                </div>
               </CardContent>
             </Card>
 
             {/* Data & Privacy */}
-            <Card className="sfs-glow-hover border-destructive/20">
+            <Card className="smartflow-card sfs-glow-hover border-destructive/20">
               <CardHeader className="circuit-accent">
-                <CardTitle>
-                  <i className="fas fa-shield-alt text-destructive mr-2"></i>
+                <CardTitle className="flex items-center gap-2">
+                  <i className="fas fa-shield-alt text-destructive"></i>
                   Data & Privacy
                 </CardTitle>
                 <CardDescription>
@@ -261,7 +347,7 @@ export default function Settings() {
               <Button
                 size="lg"
                 onClick={handleSaveSettings}
-                className="smartflow-gradient text-white sfs-glow-hover"
+                className="bg-sfs-gradient text-sfs-black font-semibold sfs-glow-hover animate-gold-pulse"
               >
                 <i className="fas fa-save w-4 h-4 mr-2"></i>
                 Save Settings

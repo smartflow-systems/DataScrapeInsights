@@ -3,14 +3,43 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+
+const SUGGESTED_QUERIES = [
+  {
+    category: "Popular",
+    queries: [
+      "Show me the top 10 websites by traffic this month",
+      "What are the most frequently scraped domains?",
+      "Show me all failed scraping attempts in the last 7 days",
+    ],
+  },
+  {
+    category: "Analytics",
+    queries: [
+      "Calculate the average response time for all API calls",
+      "Show me social media engagement trends over the last 30 days",
+      "List all data exports created this week",
+    ],
+  },
+  {
+    category: "Performance",
+    queries: [
+      "Which scraping jobs have the longest execution time?",
+      "Show me error rates grouped by source type",
+      "Find all queries that took longer than 5 seconds",
+    ],
+  },
+];
 
 export default function NLSQLInterface() {
   const [naturalQuery, setNaturalQuery] = useState("");
   const [generatedSQL, setGeneratedSQL] = useState("");
   const [explanation, setExplanation] = useState("");
   const [currentQueryId, setCurrentQueryId] = useState<number | null>(null);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -146,33 +175,92 @@ export default function NLSQLInterface() {
     }
   };
 
+  const useSuggestedQuery = (query: string) => {
+    setNaturalQuery(query);
+    setShowSuggestions(false);
+  };
+
   return (
-    <Card>
+    <Card className="smartflow-card">
       <CardHeader>
-        <CardTitle className="flex items-center">
-          <i className="fas fa-brain w-5 h-5 mr-2 text-primary"></i>
+        <CardTitle className="flex items-center gap-2">
+          <i className="fas fa-brain text-sfs-gold-200"></i>
           Natural Language to SQL
         </CardTitle>
-        <p className="text-sm text-muted-foreground">Ask questions about your data in plain English</p>
+        <p className="text-sm text-muted-foreground">Ask questions about your data in plain English with AI-powered assistance</p>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Suggested Queries */}
+        {showSuggestions && !naturalQuery && (
+          <div className="mb-4 p-4 rounded-lg border border-sfs-gold-200/20 bg-sfs-black/30">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-semibold text-sfs-gold-200 flex items-center gap-2">
+                <i className="fas fa-lightbulb"></i>
+                Suggested Queries
+              </h4>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowSuggestions(false)}
+                className="text-xs"
+              >
+                Hide
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {SUGGESTED_QUERIES.map((section) => (
+                <div key={section.category}>
+                  <Badge variant="outline" className="mb-2 border-sfs-gold-200/30 text-sfs-gold-200">
+                    {section.category}
+                  </Badge>
+                  <div className="space-y-2">
+                    {section.queries.map((query, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => useSuggestedQuery(query)}
+                        className="w-full text-left text-sm p-2 rounded hover:bg-sfs-gold-200/10 border border-transparent hover:border-sfs-gold-200/20 transition-all"
+                      >
+                        <i className="fas fa-chevron-right text-sfs-gold-200 mr-2 text-xs"></i>
+                        {query}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Query Input */}
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Ask a question about your data
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-foreground">
+              Ask a question about your data
+            </label>
+            {!showSuggestions && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowSuggestions(true)}
+                className="text-xs text-sfs-gold-200"
+              >
+                <i className="fas fa-lightbulb mr-1"></i>
+                Show Suggestions
+              </Button>
+            )}
+          </div>
           <div className="relative">
             <Textarea
               value={naturalQuery}
               onChange={(e) => setNaturalQuery(e.target.value)}
               placeholder="e.g., Show me the top 10 websites by traffic this month"
               rows={3}
-              className="resize-none"
+              className="resize-none pr-32"
             />
             <Button
               onClick={handleGenerateSQL}
               disabled={generateSQLMutation.isPending}
-              className="absolute bottom-3 right-3"
+              className="absolute bottom-3 right-3 bg-sfs-gradient hover:opacity-90"
               size="sm"
             >
               {generateSQLMutation.isPending ? (

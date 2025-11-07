@@ -8,40 +8,52 @@
 @tailwind utilities;
 
 :root {
-  /* SmartFlow Systems Starry Theme Colors */
-  --sf-gold: hsl(45, 88%, 62%);
-  --sf-gold-light: hsl(45, 90%, 70%);
-  --sf-gold-dark: hsl(45, 80%, 50%);
-  --sf-star: hsl(45, 95%, 85%);
-  --sf-cosmic-dark: #0D0D0D;
+  /* SFS Enhanced Theme Colors */
+  --sfs-brown: #4B2E2E;
+  --sfs-black: #0A0A0A;
+  --sfs-gold-50: #FFF7CC;
+  --sfs-gold-100: #FFE58A;
+  --sfs-gold-200: #FFD700;
+  --sfs-gold-300: #E6C200;
+  --sfs-gold-400: #B58E00;
+  --sfs-gold-500: #7A5A00;
+
+  /* Legacy SmartFlow compatibility */
+  --sf-gold: #FFD700;
+  --sf-gold-light: #FFE58A;
+  --sf-gold-dark: #E6C200;
+  --sf-star: #FFF7CC;
+  --sf-cosmic-dark: #0A0A0A;
   --sf-cosmic-darker: #0A0A0A;
-  
-  /* SmartFlow Starry Theme - Dark by Default */
-  --background: var(--sf-cosmic-dark);
+
+  /* SFS Theme - Dark by Default with Brown and Gold */
+  --background: var(--sfs-brown);
   --foreground: hsl(0, 0%, 96%);
   --muted: hsl(30, 10%, 12%);
   --muted-foreground: hsl(45, 10%, 65%);
-  --popover: hsl(0, 0%, 7%);
+  --popover: var(--sfs-black);
   --popover-foreground: hsl(0, 0%, 95%);
-  --card: hsl(0, 0%, 8%);
+  --card: var(--sfs-black);
   --card-foreground: hsl(0, 0%, 95%);
   --border: hsl(45, 15%, 20%);
   --input: hsl(45, 15%, 25%);
-  --primary: var(--sf-gold);
-  --primary-foreground: #0D0D0D;
+  --primary: var(--sfs-gold-200);
+  --primary-foreground: #0A0A0A;
   --secondary: hsl(30, 15%, 18%);
   --secondary-foreground: hsl(0, 0%, 90%);
-  --accent: var(--sf-gold);
-  --accent-foreground: #0D0D0D;
+  --accent: var(--sfs-gold-200);
+  --accent-foreground: #0A0A0A;
   --destructive: hsl(0, 85%, 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --ring: var(--sf-gold);
+  --ring: var(--sfs-gold-200);
   --radius: 0.75rem;
-  --chart-1: var(--sf-gold);
-  --chart-2: hsl(200, 70%, 60%);
-  --chart-3: hsl(260, 60%, 65%);
-  --chart-4: hsl(320, 60%, 65%);
-  --chart-5: hsl(145, 60%, 55%);
+
+  /* Enhanced Chart Colors with SFS Gold Palette */
+  --chart-1: var(--sfs-gold-200);
+  --chart-2: var(--sfs-gold-300);
+  --chart-3: var(--sfs-gold-400);
+  --chart-4: var(--sfs-gold-100);
+  --chart-5: var(--sfs-gold-500);
 }
 
 /* Light mode for contrast (if ever needed) */
@@ -62,7 +74,7 @@
   body {
     @apply font-sans antialiased text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--sf-cosmic-dark);
+    background: var(--sfs-brown);
     /* Canvas animation handles the circuit flow now */
   }
 
