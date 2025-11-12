@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar from "@/components/layout/sidebar";
+import GitHubSidebar from "@/components/dashboard/GitHubSidebar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,12 +24,12 @@ export default function Settings() {
   };
 
   return (
-    <div className="flex h-screen circuit-pattern">
-      <Sidebar />
+    <div className="min-h-screen bg-[#F5F5DC] circuit-pattern">
+      <GitHubSidebar />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex flex-col">
         {/* Header */}
-        <header className="smartflow-header px-6 py-4">
+        <header className="smartflow-header px-6 py-4 mt-16">
           <div>
             <h2 className="text-2xl font-bold text-foreground flex items-center">
               <i className="fas fa-cog text-sf-gold mr-3"></i>
@@ -40,7 +40,7 @@ export default function Settings() {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="overflow-auto p-6 max-w-7xl mx-auto w-full">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* API Configuration */}
             <Card className="smartflow-card sfs-glow-hover">

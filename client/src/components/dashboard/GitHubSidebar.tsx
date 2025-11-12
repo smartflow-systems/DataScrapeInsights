@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, Sun, Moon } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
+import { useTheme } from '@/App';
 
 export default function GitHubSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [location] = useLocation();
+  const { isDark, toggleTheme } = useTheme();
 
   // Close on ESC key
   useEffect(() => {
@@ -117,7 +119,7 @@ export default function GitHubSidebar() {
           ))}
         </ul>
 
-        {/* Footer CTA */}
+        {/* Footer */}
         <div className="p-5 border-t border-[#3B2F2F]">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-[#FFD700] rounded-full flex items-center justify-center">
@@ -127,13 +129,22 @@ export default function GitHubSidebar() {
               <p className="text-sm font-medium text-[#F5F5DC] truncate">SmartFlow</p>
               <p className="text-xs text-[#F5F5DC]/70 truncate">Admin User</p>
             </div>
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-[#FFD700] hover:text-[#E6C200] hover:bg-[#3B2F2F] rounded transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
           </div>
-          <a
-            href="#analytics"
-            className="block w-full py-3 px-4 bg-[#FFD700] text-[#0D0D0D] text-center font-semibold rounded hover:bg-[#E6C200] transition-colors"
-          >
-            View Analytics
-          </a>
+          <Link href="/">
+            <a
+              onClick={() => setIsOpen(false)}
+              className="block w-full py-3 px-4 bg-[#FFD700] text-[#0D0D0D] text-center font-semibold rounded hover:bg-[#E6C200] transition-colors"
+            >
+              View Dashboard
+            </a>
+          </Link>
         </div>
       </nav>
     </>

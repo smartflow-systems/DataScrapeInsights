@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import Sidebar from "@/components/layout/sidebar";
+import GitHubSidebar from "@/components/dashboard/GitHubSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -56,12 +56,12 @@ export default function QueryHistory() {
   });
 
   return (
-    <div className="flex h-screen circuit-pattern">
-      <Sidebar />
+    <div className="min-h-screen bg-[#F5F5DC] circuit-pattern">
+      <GitHubSidebar />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex flex-col">
         {/* Header */}
-        <header className="smartflow-header px-6 py-4">
+        <header className="smartflow-header px-6 py-4 mt-16">
           <div>
             <h2 className="text-2xl font-bold text-foreground flex items-center">
               <i className="fas fa-history text-sf-gold mr-3"></i>
@@ -72,7 +72,7 @@ export default function QueryHistory() {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="overflow-auto p-6 max-w-7xl mx-auto w-full">
           <Card>
             <CardHeader>
               <CardTitle>All Queries</CardTitle>
