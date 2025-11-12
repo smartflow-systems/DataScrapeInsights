@@ -1,4 +1,5 @@
 import express, { type Express } from "express";
+import rateLimit from "express-rate-limit";
 import fs from "fs";
 import path from "path";
 import { createServer as createViteServer, createLogger } from "vite";
@@ -41,6 +42,14 @@ export async function setupVite(app: Express, server: Server) {
   });
 
   app.use(vite.middlewares);
+
+  // Apply rate limit to all requests handled by this wildcard handler
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // max 100 requests per windowMs per IP
+  });
+  app.use(limiter);
+
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
