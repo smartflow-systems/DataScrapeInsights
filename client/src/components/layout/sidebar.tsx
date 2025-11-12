@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/App";
+import HamburgerMenu from "../HamburgerMenu";
 
 const navigationItems = [
   {
@@ -72,13 +73,18 @@ export default function Sidebar() {
     <div className="w-64 glass-panel border-r border-border flex flex-col relative overflow-hidden">
       {/* Logo/Brand */}
       <div className="smartflow-gradient p-6 border-b border-sf-gold/30 circuit-accent">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
             <i className="fas fa-chart-line text-lg" style={{color: 'hsl(215, 85%, 35%)'}}></i>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-white">SmartFlow</h1>
-            <p className="text-xs text-blue-100">Systems Dashboard</p>
+            <div>
+              <h1 className="text-xl font-bold text-white">SmartFlow</h1>
+              <p className="text-xs text-blue-100">Systems Dashboard</p>
+            </div>
+          </div>
+          <div className="lg:hidden">
+            <HamburgerMenu />
           </div>
         </div>
       </div>
