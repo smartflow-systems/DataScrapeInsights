@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: datascrape-insights-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: datascrapeinsights
+      POSTGRES_USER: datascrapeinsights
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-datascrape_dev_pass}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U datascrapeinsights -d datascrapeinsights"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - datascrape-network
+
+  # Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: datascrape-insights-app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-5000}:5000"
+    environment:
+      # Application
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 5000
+
+      # Database - Uses PostgreSQL service
+      DATABASE_URL: postgresql://datascrapeinsights:${DB_PASSWORD:-datascrape_dev_pass}@postgres:5432/datascrapeinsights
+
+      # OpenAI API
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+      # Session & Security
+      SESSION_SECRET: ${SESSION_SECRET:-dev-secret-change-in-production}
+
+      # Rate Limiting
+      API_RATE_LIMIT_WINDOW_MS: ${API_RATE_LIMIT_WINDOW_MS:-900000}
+      API_RATE_LIMIT_MAX: ${API_RATE_LIMIT_MAX:-100}
+    volumes:
+      # Mount source code for hot-reload in development
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - datascrape-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  datascrape-network:
+    driver: bridge
+
+# Usage:
+# Development: docker-compose up
+# Production: docker-compose up -d
+# Rebuild: docker-compose up --build
