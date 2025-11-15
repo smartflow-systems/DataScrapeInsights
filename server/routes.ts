@@ -26,11 +26,12 @@ import { createScheduledReport, deleteScheduledReport, getScheduledReports, gene
 import { ABTestManager, FeatureFlags } from "./ab-testing";
 import { saveVersion, getVersionHistory, restoreVersion, getDiff, recordAudit, getAuditTrail, createSnapshot, listSnapshots, restoreSnapshot } from "./data-versioning";
 import { createDashboard, updateDashboard, getDashboard, deleteDashboard, listDashboards, exportDashboard, importDashboard, shareDashboard, cloneDashboard, WidgetTemplates, DashboardThemes } from "./custom-dashboards";
+import { apiLimiter } from "./middleware/security";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Dashboard stats
-  app.get("/api/stats", async (req, res) => {
+  app.get("/api/stats", apiLimiter, async (req, res) => {
     try {
       const stats = await storage.getDashboardStats();
       res.json(stats);
@@ -41,7 +42,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Natural Language to SQL
-  app.post("/api/nl-to-sql", async (req, res) => {
+  app.post("/api/nl-to-sql", apiLimiter, async (req, res) => {
     try {
       const { naturalLanguageQuery } = req.body;
       
@@ -70,7 +71,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Execute SQL query
-  app.post("/api/queries/:id/execute", async (req, res) => {
+  app.post("/api/queries/:id/execute", apiLimiter, async (req, res) => {
     try {
       const { id } = req.params;
       const query = await storage.getQuery(parseInt(id));
@@ -106,7 +107,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Explain SQL query
-  app.post("/api/queries/:id/explain", async (req, res) => {
+  app.post("/api/queries/:id/explain", apiLimiter, async (req, res) => {
     try {
       const { id } = req.params;
       const query = await storage.getQuery(parseInt(id));
@@ -124,7 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Save query
-  app.post("/api/queries/:id/save", async (req, res) => {
+  app.post("/api/queries/:id/save", apiLimiter, async (req, res) => {
     try {
       const { id } = req.params;
       const { name } = req.body;
@@ -142,7 +143,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get queries (saved and recent)
-  app.get("/api/queries", async (req, res) => {
+  app.get("/api/queries", apiLimiter, async (req, res) => {
     try {
       const { saved, limit = "20" } = req.query;
       const queries = await storage.getQueries({
@@ -157,7 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Web scraper endpoints
-  app.post("/api/scrapers", async (req, res) => {
+  app.post("/api/scrapers", apiLimiter, async (req, res) => {
     try {
       const scraperData = insertScraperSchema.parse(req.body);
       const scraper = await storage.createScraper(scraperData);
@@ -176,7 +177,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/scrapers", async (req, res) => {
+  app.get("/api/scrapers", apiLimiter, async (req, res) => {
     try {
       const scrapers = await storage.getScrapers();
       res.json(scrapers);
@@ -187,7 +188,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Test scraper selectors
-  app.post("/api/scrapers/test", async (req, res) => {
+  app.post("/api/scrapers/test", apiLimiter, async (req, res) => {
     try {
       const { url, selectors } = req.body;
       
@@ -204,7 +205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Run scraper
-  app.post("/api/scrapers/:id/run", async (req, res) => {
+  app.post("/api/scrapers/:id/run", apiLimiter, async (req, res) => {
     try {
       const { id } = req.params;
       const scraper = await storage.getScraper(parseInt(id));
@@ -251,7 +252,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Social media data endpoints
-  app.get("/api/social-media", async (req, res) => {
+  app.get("/api/social-media", apiLimiter, async (req, res) => {
     try {
       const { platform, limit = "50" } = req.query;
       const data = await storage.getSocialMediaData({
@@ -266,7 +267,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Analyze social media sentiment
-  app.post("/api/social-media/:id/analyze", async (req, res) => {
+  app.post("/api/social-media/:id/analyze", apiLimiter, async (req, res) => {
     try {
       const { id } = req.params;
       const socialData = await storage.getSocialMediaDataById(parseInt(id));
@@ -291,7 +292,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Export data
-  app.post("/api/exports", async (req, res) => {
+  app.post("/api/exports", apiLimiter, async (req, res) => {
     try {
       const { name, type, queryId } = req.body;
       
@@ -325,7 +326,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/exports", async (req, res) => {
+  app.get("/api/exports", apiLimiter, async (req, res) => {
     try {
       const exports = await storage.getExports();
       res.json(exports);
@@ -336,7 +337,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Activities
-  app.get("/api/activities", async (req, res) => {
+  app.get("/api/activities", apiLimiter, async (req, res) => {
     try {
       const { limit = "20" } = req.query;
       const activities = await storage.getActivities(parseInt(limit as string));
