@@ -1,4 +1,4 @@
-import { db } from '../shared/storage';
+import { db } from './db';
 import { scrapedData, socialMediaData, queries, activities } from '../shared/schema';
 import { sql } from 'drizzle-orm';
 

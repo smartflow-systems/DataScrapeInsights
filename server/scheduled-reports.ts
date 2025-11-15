@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { createExport } from './export-service';
 import { sendEmail } from './notification-service';
-import { db } from '../shared/storage';
+import { db } from './db';
 
 interface ScheduledReport {
   id: string;

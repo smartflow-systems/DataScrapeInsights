@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { db } from '../shared/storage';
+import { db } from './db';
 import { queries } from '../shared/schema';
 import { eq, and, or, inArray } from 'drizzle-orm';
 import { broadcastEvent, WebSocketEvents } from './websocket';

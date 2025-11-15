@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { db } from '../shared/storage';
+import { db } from './db';
 import { scrapedData, activities } from '../shared/schema';
 
 const openai = new OpenAI({

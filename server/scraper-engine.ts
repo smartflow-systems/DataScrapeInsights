@@ -1,4 +1,4 @@
-import { db } from '../shared/storage';
+import { db } from './db';
 import { scrapedData, activities } from '../shared/schema';
 import type { Scraper } from '../shared/schema';
 

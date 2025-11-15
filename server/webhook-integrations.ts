@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import crypto from 'crypto';
-import { db } from '../shared/storage';
+import { db } from './db';
 import { activities } from '../shared/schema';
 import { broadcastEvent, WebSocketEvents } from './websocket';
 

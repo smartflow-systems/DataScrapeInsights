@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { db } from '../shared/storage';
+import { db } from './db';
 import { scrapedData, socialMediaData, queries as queriesTable } from '../shared/schema';
 import { sql } from 'drizzle-orm';
 

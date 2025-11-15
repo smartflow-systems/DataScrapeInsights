@@ -1,5 +1,5 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLBoolean, GraphQLNonNull, GraphQLInputObjectType } from 'graphql';
-import { storage } from './storage';
+import { storage } from './db';
 import { generateSQLFromNaturalLanguage } from './services/openai';
 import { predictMetrics, detectAnomalies, generateSmartRecommendations } from './ml-analytics';
 

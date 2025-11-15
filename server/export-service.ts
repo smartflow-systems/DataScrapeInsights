@@ -2,7 +2,7 @@ import * as XLSX from 'xlsx';
 import { stringify } from 'csv-stringify/sync';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { db } from '../shared/storage';
+import { db } from './db';
 import { queries, exports, activities } from '../shared/schema';
 import { eq } from 'drizzle-orm';
 import { broadcastEvent, WebSocketEvents } from './websocket';

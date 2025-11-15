@@ -322,6 +322,70 @@ These features lay the foundation for even more power features:
 
 ---
 
+## 💷 Currency Formatting
+
+**Professional currency display using GBP (£)**
+
+DataFlow uses British Pounds (£) as the standard currency throughout the platform.
+
+### Available Utilities:
+
+```typescript
+import { formatCurrency, formatCompactCurrency, CURRENCY_SYMBOL } from '@/lib/currency';
+
+// Basic formatting
+formatCurrency(1234.56);        // "£1,234.56"
+formatCurrency(1234.56, { decimals: 0 }); // "£1,235"
+formatCurrency(1234.56, { showSymbol: false }); // "1,234.56"
+
+// Compact notation (for large numbers)
+formatCompactCurrency(1200);     // "£1.2K"
+formatCompactCurrency(3400000);  // "£3.4M"
+formatCompactCurrency(500);      // "£500.00"
+
+// Use with AnimatedStatsCard
+<AnimatedStatsCard
+  title="Revenue"
+  value={12345}
+  prefix={CURRENCY_SYMBOL}
+  icon={TrendingUp}
+/>
+```
+
+### Features:
+- 🇬🇧 **British Pounds (£)** as default currency
+- 📊 **Compact notation** for large numbers (K, M)
+- 🌍 **Locale-aware** formatting (en-GB)
+- 🎯 **Type-safe** with TypeScript
+- ♻️ **Reusable** utilities across the app
+
+### Usage Examples:
+
+**In Stats Cards:**
+```typescript
+<AnimatedStatsCard
+  title="Total Revenue"
+  value={125000}
+  prefix="£"
+  suffix=""
+  icon={DollarSign}
+/>
+```
+
+**In Tables:**
+```typescript
+{formatCurrency(item.amount)}
+```
+
+**In Charts:**
+```typescript
+tooltip: {
+  format: (value) => formatCompactCurrency(value)
+}
+```
+
+---
+
 ## 🎉 Summary
 
 **DataFlow is now a POWERHOUSE!**
@@ -331,6 +395,7 @@ You have:
 - ⌨️ **Keyboard Shortcuts** - Power user efficiency
 - 💎 **Beautiful Empty States** - Engaging "no data" screens
 - 🎨 **Loading Skeletons** - Professional loading states
+- 💷 **Currency Utilities** - GBP (£) formatting
 - 🌟 **SFS Theme** - Consistent, luxurious design
 
 **All integrated seamlessly with zero breaking changes!**

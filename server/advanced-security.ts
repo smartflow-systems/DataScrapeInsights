@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { db } from '../shared/storage';
+import { db } from './db';
 
 // Role-Based Access Control
 export enum Role {

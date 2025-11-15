@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import { db } from '../shared/storage';
+import { db } from './db';
 import { scrapers, scrapedData, activities } from '../shared/schema';
 import { eq } from 'drizzle-orm';
 import { broadcastEvent, WebSocketEvents } from './websocket';

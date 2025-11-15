@@ -18,6 +18,8 @@ import NotFound from "@/pages/not-found";
 import CommandPalette from "@/components/CommandPalette";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import { ToastContainer } from "@/components/RichToast";
+import OnboardingTour from "@/components/OnboardingTour";
+import QuickActionsMenu from "@/components/QuickActionsMenu";
 
 // Theme context
 const ThemeContext = createContext<{
@@ -63,6 +65,8 @@ function App() {
         <canvas id="circuit-canvas"></canvas>
         <CommandPalette />
         <KeyboardShortcuts />
+        <OnboardingTour />
+        <QuickActionsMenu />
         <Switch>
           <Route path="/" component={Dashboard} />
           <Route path="/scraper" component={WebScraper} />
