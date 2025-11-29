@@ -62,8 +62,8 @@ export default {
           ring: "var(--sidebar-ring)",
         },
         // SFS Theme Colors
-        "sfs-brown": "#4B2E2E",
-        "sfs-black": "#0A0A0A",
+        "sfs-brown": "#3B2F2F",
+        "sfs-black": "#0D0D0D",
         "sfs-gold": {
           "50": "#FFF7CC",
           "100": "#FFE58A",
