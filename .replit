@@ -54,3 +54,8 @@ outputType = "webview"
 
 [nix]
 packages = ["gh"]
+
+[userenv]
+
+[userenv.shared]
+GIT_URL = "https://boweazy:$SFS_PAT@github.com/boweazy/DataScrapeInsights"
