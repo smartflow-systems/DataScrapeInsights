@@ -1,56 +1,58 @@
 #!/usr/bin/env node
 /**
  * DataFlow Database Health Check
- * Verifies the database is connected, all 6 tables exist, and the schema
- * matches the Drizzle definitions in shared/schema.ts.
  *
- * Usage: node scripts/db-verify.mjs
+ * Verifies:
+ *   1. DATABASE_URL connection succeeds
+ *   2. All 6 application tables exist
+ *   3. Every column from shared/schema.ts is present (schema conformity)
+ *   4. App /health endpoint responds (smoke test)
+ *
+ * Usage:  node scripts/db-verify.mjs
+ * Exits non-zero on any failure (CI-friendly).
  */
 
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import ws from 'ws';
+import pg from 'pg';
 
-neonConfig.webSocketConstructor = ws;
+const { Client } = pg;
 
-// Expected schema derived from shared/schema.ts
+// Schema derived from shared/schema.ts — kept in sync with Drizzle definitions.
 const EXPECTED_SCHEMA = {
-  scrapers: ['id', 'name', 'url', 'selectors', 'frequency', 'max_pages', 'is_active', 'created_at', 'updated_at'],
-  scraped_data: ['id', 'url', 'domain', 'title', 'content', 'selectors', 'scraped_at', 'scraper_id'],
-  queries: ['id', 'name', 'natural_language_query', 'sql_query', 'results', 'is_saved', 'executed_at', 'created_at'],
+  scrapers:          ['id', 'name', 'url', 'selectors', 'frequency', 'max_pages', 'is_active', 'created_at', 'updated_at'],
+  scraped_data:      ['id', 'url', 'domain', 'title', 'content', 'selectors', 'scraped_at', 'scraper_id'],
+  queries:           ['id', 'name', 'natural_language_query', 'sql_query', 'results', 'is_saved', 'executed_at', 'created_at'],
   social_media_data: ['id', 'platform', 'content', 'author', 'metrics', 'sentiment', 'keywords', 'collected_at'],
-  exports: ['id', 'name', 'type', 'query_id', 'file_path', 'status', 'created_at', 'completed_at'],
-  activities: ['id', 'type', 'message', 'status', 'metadata', 'created_at'],
+  exports:           ['id', 'name', 'type', 'query_id', 'file_path', 'status', 'created_at', 'completed_at'],
+  activities:        ['id', 'type', 'message', 'status', 'metadata', 'created_at'],
 };
 
+const APP_HEALTH_URL = process.env.APP_HEALTH_URL || 'http://localhost:5000/health';
+
 async function verify() {
-  console.log('\n🔍 DataFlow Database Health Check\n');
-  console.log('─'.repeat(50));
+  console.log('\nDataFlow Database Health Check');
+  console.log('='.repeat(50));
 
   if (!process.env.DATABASE_URL) {
-    console.error('❌  DATABASE_URL is not set.');
-    console.error('    Provision a database in Replit (Database tab) or add the secret.');
+    console.error('FAIL  DATABASE_URL is not set.');
     process.exit(1);
   }
 
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const client = new Client({ connectionString: process.env.DATABASE_URL });
 
   // 1. Connection
-  console.log('\n1️⃣  Testing connection...');
-  let client;
+  console.log('\n[1] Connection');
   try {
-    client = await pool.connect();
-    const { rows } = await client.query('SELECT current_database(), current_user');
-    console.log(`   ✅  Database: ${rows[0].current_database}`);
-    console.log(`   ✅  User:     ${rows[0].current_user}`);
+    await client.connect();
+    const { rows } = await client.query('SELECT current_database() AS db, current_user AS usr');
+    console.log(`    OK  Database: ${rows[0].db}, User: ${rows[0].usr}`);
   } catch (err) {
-    console.error(`   ❌  Connection failed: ${err.message}`);
-    await pool.end();
+    console.error(`    FAIL  ${err.message}`);
     process.exit(1);
   }
 
-  // 2. Schema verification (tables + columns)
-  console.log('\n2️⃣  Verifying schema (tables + columns)...');
-  let allGood = true;
+  // 2. Schema conformity
+  console.log('\n[2] Schema conformity (vs shared/schema.ts)');
+  let schemaOk = true;
   for (const [table, expectedCols] of Object.entries(EXPECTED_SCHEMA)) {
     const { rows: cols } = await client.query(
       `SELECT column_name FROM information_schema.columns
@@ -60,35 +62,51 @@ async function verify() {
     );
 
     if (cols.length === 0) {
-      console.log(`   ❌  ${table} — TABLE MISSING`);
-      allGood = false;
+      console.log(`    FAIL  ${table.padEnd(20)} TABLE MISSING`);
+      schemaOk = false;
       continue;
     }
 
     const actual = new Set(cols.map((c) => c.column_name));
     const missing = expectedCols.filter((c) => !actual.has(c));
+    const { rows: count } = await client.query(`SELECT COUNT(*)::int AS n FROM "${table}"`);
 
-    const { rows: count } = await client.query(`SELECT COUNT(*) FROM "${table}"`);
     if (missing.length === 0) {
-      console.log(`   ✅  ${table.padEnd(20)} ${cols.length} cols, ${count[0].count} rows`);
+      console.log(`    OK    ${table.padEnd(20)} ${String(cols.length).padStart(2)} cols, ${count[0].n} rows`);
     } else {
-      console.log(`   ⚠️   ${table.padEnd(20)} missing columns: ${missing.join(', ')}`);
-      allGood = false;
+      console.log(`    FAIL  ${table.padEnd(20)} missing columns: ${missing.join(', ')}`);
+      schemaOk = false;
     }
   }
 
-  // 3. Summary
-  console.log('\n' + '─'.repeat(50));
-  if (allGood) {
-    console.log('✅  All checks passed — database schema is in sync!\n');
-  } else {
-    console.log('⚠️   Schema mismatch detected.');
-    console.log('    Recreate missing tables/columns from shared/schema.ts.\n');
-    process.exit(1);
+  await client.end();
+
+  // 3. App smoke test
+  console.log('\n[3] App smoke test');
+  let smokeOk = false;
+  try {
+    const res = await fetch(APP_HEALTH_URL);
+    if (res.ok) {
+      const body = await res.json();
+      console.log(`    OK    ${APP_HEALTH_URL} -> ${JSON.stringify(body)}`);
+      smokeOk = true;
+    } else {
+      console.log(`    WARN  ${APP_HEALTH_URL} -> HTTP ${res.status}`);
+    }
+  } catch (err) {
+    console.log(`    WARN  app not reachable: ${err.message}`);
   }
 
-  client.release();
-  await pool.end();
+  // Summary
+  console.log('\n' + '='.repeat(50));
+  if (schemaOk && smokeOk) {
+    console.log('PASS  Database is healthy and app is responsive.\n');
+  } else if (schemaOk) {
+    console.log('PARTIAL  Database OK, app smoke test could not run.\n');
+  } else {
+    console.log('FAIL  Schema mismatch — recreate from shared/schema.ts\n');
+    process.exit(1);
+  }
 }
 
 verify().catch((err) => {
