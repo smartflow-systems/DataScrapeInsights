@@ -39,6 +39,7 @@ Three npm scripts are available for schema management:
 | `npm run db:push` | `drizzle-kit push` | **Development** — applies schema directly to the DB without generating migration files; fast for iterating on the schema locally. |
 | `npm run db:generate` | `drizzle-kit generate` | **Pre-deployment** — generates versioned SQL migration files in `./migrations/` that can be reviewed and committed to source control. |
 | `npm run db:migrate` | `drizzle-kit migrate` | **Deployment / CI** — applies all pending generated migration files in order; preferred for production where an audit trail matters. |
+| `npm run db:studio` | `drizzle-kit studio` | **Development** — opens Drizzle Studio, a browser-based UI for browsing and editing database tables without writing SQL. |
 
 Prefer `db:push` during local development and `db:generate` + `db:migrate` in production deployments.
 
