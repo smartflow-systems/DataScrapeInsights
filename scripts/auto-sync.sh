@@ -40,8 +40,16 @@ git commit -m "chore: auto-commit [Auto-Sync]" || true
 
 CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
-$GIT fetch origin || true
-$GIT pull --no-rebase --no-edit origin "$CURRENT_BRANCH" || true
+if ! $GIT fetch origin; then
+  echo "❌ Failed to fetch from origin — check network connectivity and credentials."
+  exit 1
+fi
+if ! $GIT pull --rebase origin "$CURRENT_BRANCH"; then
+  echo "❌ Rebase failed — likely a conflict with the remote branch."
+  echo "   Run 'git rebase --abort' to restore the branch, then resolve conflicts manually."
+  $GIT rebase --abort 2>/dev/null || true
+  exit 1
+fi
 $GIT push origin "HEAD:$CURRENT_BRANCH"
 
 echo "✅ Auto-sync complete!"
