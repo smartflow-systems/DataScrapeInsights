@@ -6,7 +6,7 @@
  *   1. DATABASE_URL connection succeeds
  *   2. All 6 application tables exist
  *   3. Every column from shared/schema.ts is present (schema conformity)
- *   4. App /health endpoint responds (smoke test)
+ *   4. App /api/stats endpoint responds (smoke test)
  *
  * Usage:  node scripts/db-verify.mjs
  * Exits non-zero on any failure (CI-friendly).
@@ -26,7 +26,7 @@ const EXPECTED_SCHEMA = {
   activities:        ['id', 'type', 'message', 'status', 'metadata', 'created_at'],
 };
 
-const APP_HEALTH_URL = process.env.APP_HEALTH_URL || 'http://localhost:5000/health';
+const APP_HEALTH_URL = process.env.APP_HEALTH_URL || 'http://localhost:5000/api/stats';
 
 async function verify() {
   console.log('\nDataFlow Database Health Check');

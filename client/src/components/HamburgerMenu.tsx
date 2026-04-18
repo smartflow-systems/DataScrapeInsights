@@ -119,13 +119,12 @@ export default function HamburgerMenu() {
                     const Icon = item.icon;
                     const active = isActive(item.href);
                     return (
-                      <Link key={item.id} href={item.href} onClick={handleLinkClick}>
-                        <a className={cn("flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all group relative overflow-hidden",
+                      <Link key={item.id} href={item.href} onClick={handleLinkClick}
+                        className={cn("flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-all group relative overflow-hidden",
                           active ? "bg-sf-gold/20 text-sf-gold border-l-2 border-sf-gold" : "text-blue-100/70 hover:bg-sf-gold/10 hover:text-sf-gold")}>
-                          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-sf-gold/10 to-transparent" />
-                          <Icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-sf-gold" : "")} />
-                          <span className="font-medium text-sm relative z-10">{item.label}</span>
-                        </a>
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-sf-gold/10 to-transparent" />
+                        <Icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-sf-gold" : "")} />
+                        <span className="font-medium text-sm relative z-10">{item.label}</span>
                       </Link>
                     );
                   })}

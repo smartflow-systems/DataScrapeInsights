@@ -93,17 +93,15 @@ export default function Sidebar() {
       <nav className="flex-1 p-4">
         <div className="space-y-2">
           {navigationItems.map((item) => (
-            <Link key={item.id} href={item.href}>
-              <a
-                className={`flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                  isActive(item.href)
-                    ? "sidebar-active"
-                    : "text-muted-foreground hover:bg-gradient-to-r hover:from-sf-gold/10 hover:to-sf-gold-light/10 hover:text-sf-gold hover:border-sf-gold/20"
-                }`}
-              >
-                <i className={`${item.icon} w-4 h-4`}></i>
-                <span>{item.label}</span>
-              </a>
+            <Link key={item.id} href={item.href}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                isActive(item.href)
+                  ? "sidebar-active"
+                  : "text-muted-foreground hover:bg-gradient-to-r hover:from-sf-gold/10 hover:to-sf-gold-light/10 hover:text-sf-gold hover:border-sf-gold/20"
+              }`}
+            >
+              <i className={`${item.icon} w-4 h-4`}></i>
+              <span>{item.label}</span>
             </Link>
           ))}
         </div>
@@ -112,11 +110,9 @@ export default function Sidebar() {
         <div className="mt-8 pt-4 border-t border-sf-gold/20">
           <div className="space-y-2">
             {bottomItems.map((item) => (
-              <Link key={item.id} href={item.href}>
-                <a className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-gradient-to-r hover:from-sf-gold/10 hover:to-sf-gold-light/10 hover:text-sf-gold hover:border-sf-gold/20 transition-all duration-200">
-                  <i className={`${item.icon} w-4 h-4`}></i>
-                  <span>{item.label}</span>
-                </a>
+              <Link key={item.id} href={item.href} className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-gradient-to-r hover:from-sf-gold/10 hover:to-sf-gold-light/10 hover:text-sf-gold hover:border-sf-gold/20 transition-all duration-200">
+                <i className={`${item.icon} w-4 h-4`}></i>
+                <span>{item.label}</span>
               </Link>
             ))}
           </div>
