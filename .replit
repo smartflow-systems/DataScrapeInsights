@@ -1,14 +1,10 @@
-modules = ["nodejs-20"]
+modules = ["nodejs-20", "postgresql-16"]
 [agent]
 expertMode = true
 
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 33707
-externalPort = 3000
 
 [workflows]
 runButton = "Run Node Server"
@@ -54,6 +50,7 @@ outputType = "webview"
 
 [nix]
 packages = ["gh"]
+channel = "stable-25_05"
 
 [userenv]
 
