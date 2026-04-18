@@ -2,19 +2,21 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { helmetConfig, corsConfig, sanitizeInput } from "./middleware/security";
+import logger from "./logger";
 
 const isDev = process.env.NODE_ENV !== "production";
 
 process.on("uncaughtException", (err) => {
-  log(`[process-error] Uncaught exception: ${err.message}\n${err.stack ?? ""}`);
+  logger.fatal({ err, event: "uncaughtException" }, err.message);
   if (!isDev) process.exit(1);
 });
 
 process.on("unhandledRejection", (reason) => {
-  const message = reason instanceof Error
-    ? `${reason.message}\n${reason.stack ?? ""}`
-    : String(reason);
-  log(`[process-error] Unhandled rejection: ${message}`);
+  if (reason instanceof Error) {
+    logger.fatal({ err: reason, event: "unhandledRejection" }, reason.message);
+  } else {
+    logger.fatal({ reason, event: "unhandledRejection" }, String(reason));
+  }
   if (!isDev) process.exit(1);
 });
 
@@ -67,7 +69,7 @@ app.use((req, res, next) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    log(`Request error [${status}]: ${err.stack ?? err.message}`);
+    logger.error({ err, status }, message);
     res.status(status).json({ message });
   });
 
@@ -89,6 +91,6 @@ app.use((req, res, next) => {
     host: "0.0.0.0",
     reusePort: true,
   }, () => {
-    log(`serving on port ${port}`);
+    logger.info({ port }, `serving on port ${port}`);
   });
 })();
