@@ -93,4 +93,8 @@ app.use((req, res, next) => {
   }, () => {
     logger.info({ port }, `serving on port ${port}`);
   });
-})();
+})().catch((err) => {
+  const message = err instanceof Error ? `${err.message}\n${err.stack ?? ""}` : String(err);
+  log(`[fatal] Server failed to start: ${message}`);
+  process.exit(1);
+});
