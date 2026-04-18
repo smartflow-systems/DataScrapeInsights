@@ -3,6 +3,21 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { helmetConfig, corsConfig, sanitizeInput } from "./middleware/security";
 
+const isDev = process.env.NODE_ENV !== "production";
+
+process.on("uncaughtException", (err) => {
+  log(`[process-error] Uncaught exception: ${err.message}\n${err.stack ?? ""}`);
+  if (!isDev) process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+  const message = reason instanceof Error
+    ? `${reason.message}\n${reason.stack ?? ""}`
+    : String(reason);
+  log(`[process-error] Unhandled rejection: ${message}`);
+  if (!isDev) process.exit(1);
+});
+
 const app = express();
 
 // Security middleware
@@ -52,8 +67,8 @@ app.use((req, res, next) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
+    log(`Request error [${status}]: ${err.stack ?? err.message}`);
     res.status(status).json({ message });
-    throw err;
   });
 
   // importantly only setup vite in development and after
