@@ -62,7 +62,7 @@ Prefer `db:push` during local development and `db:generate` + `db:migrate` in pr
 
 ### Development and Deployment
 - **Single Entry Point**: `server/index.ts` is the sole application entry point, serving both the Express API and the Vite-powered React frontend on port 5000
-- **Active Workflow**: The "Server" workflow runs `npx tsx server/index.ts` — this is the only workflow for this project. Legacy workflows ("Run Flask App", "Run Node Server") and the legacy `server.js` SmartFlow leads API have been removed.
+- **Active Workflow**: The "Start application" workflow runs `npm run dev` on port 5000 — this is the only active workflow. Legacy workflows ("Run Flask App", "Run Node Server", "Server") have been removed. Note: `.replit` retains a "Project" wrapper block that cannot be removed via platform tools (filesystem guard + prohibited workflow name), but it delegates correctly to "Start application".
 - **Development**: Hot reload with Vite middleware integration
 - **Build Process**: Separate client (Vite) and server (esbuild) builds
 - **Asset Management**: Vite handles static assets and bundling
