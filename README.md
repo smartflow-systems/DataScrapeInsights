@@ -317,6 +317,25 @@ CREATE TABLE activities (
 | `npm run db:push` | Push database schema changes |
 | `npm run sync` | Auto-sync with git |
 
+### Auto-sync to GitHub
+
+`npm run sync` (which runs `scripts/auto-sync.sh`) commits any local changes,
+pulls the remote, and pushes back to GitHub non-interactively.
+
+Required:
+- `SFS_PAT` — a GitHub Personal Access Token with `repo` push access, stored in
+  Replit Secrets. Without it the script exits with a clear error.
+
+Optional:
+- `SFS_USERNAME` — GitHub username to send with the token. Defaults to
+  `x-access-token`, which works for both classic and fine-grained PATs.
+
+How auth works: a tiny credential helper at `scripts/git-credential-sfs.sh`
+feeds `SFS_PAT` to Git on demand. It is registered in the local repo config
+(`credential.helper`), so plain `git push origin main` from the shell also
+works without prompting. The auto-sync script additionally disables
+`GIT_ASKPASS` to defeat Replit's interactive prompt helper.
+
 ### Project Structure
 
 ```
