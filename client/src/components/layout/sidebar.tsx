@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/App";
-import HamburgerMenu from "../HamburgerMenu";
-
 const navigationItems = [
   {
     id: "dashboard",
@@ -82,9 +80,6 @@ export default function Sidebar() {
               <h1 className="text-xl font-bold text-sf-gold">SmartFlow</h1>
               <p className="text-xs text-muted-foreground">Systems Dashboard</p>
             </div>
-          </div>
-          <div className="lg:hidden">
-            <HamburgerMenu />
           </div>
         </div>
       </div>
