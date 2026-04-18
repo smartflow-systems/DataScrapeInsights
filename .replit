@@ -10,24 +10,6 @@ externalPort = 80
 runButton = "Project"
 
 [[workflows.workflow]]
-name = "Run Flask App"
-author = 36680818
-mode = "sequential"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python app.py"
-
-[[workflows.workflow]]
-name = "Run Node Server"
-author = 36680818
-mode = "sequential"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "node server.js"
-
-[[workflows.workflow]]
 name = "Project"
 mode = "parallel"
 author = "agent"

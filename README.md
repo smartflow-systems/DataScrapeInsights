@@ -347,8 +347,8 @@ DataScrapeInsights/
 │   │   ├── hooks/          # Custom React hooks
 │   │   └── App.tsx         # Main app component
 │   └── index.html
-├── server/                 # Express backend
-│   ├── index.ts            # Server entry point
+├── server/                 # Express backend (sole entry point)
+│   ├── index.ts            # Server entry point — the only backend entrypoint
 │   ├── routes.ts           # API routes
 │   ├── storage.ts          # Database layer
 │   ├── db.ts               # Database connection
@@ -361,6 +361,8 @@ DataScrapeInsights/
 ├── package.json
 └── README.md
 ```
+
+> **Note:** `server/index.ts` is the single backend entry point for this application. It serves both the Express REST API and the Vite-built React frontend on port 5000 via the "Server" workflow (`npx tsx server/index.ts`).
 
 ---
 

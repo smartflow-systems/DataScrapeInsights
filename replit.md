@@ -50,6 +50,8 @@ Preferred communication style: Simple, everyday language.
 - **Modular Services**: Separate service layer for external API calls
 
 ### Development and Deployment
+- **Single Entry Point**: `server/index.ts` is the sole application entry point, serving both the Express API and the Vite-powered React frontend on port 5000
+- **Active Workflow**: The "Server" workflow runs `npx tsx server/index.ts` — this is the only workflow for this project. Legacy workflows ("Run Flask App", "Run Node Server") and the legacy `server.js` SmartFlow leads API have been removed.
 - **Development**: Hot reload with Vite middleware integration
 - **Build Process**: Separate client (Vite) and server (esbuild) builds
 - **Asset Management**: Vite handles static assets and bundling
