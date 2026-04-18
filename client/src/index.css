@@ -3,6 +3,11 @@
 /* SFS Complete Theme - Glass cards, circuit flow, premium components */
 @import url('/sfs-complete-theme.css');
 
+/* Hide SFS kit hamburger on desktop where the React sidebar is visible */
+@media (min-width: 1024px) {
+  .sfs-hamburger-btn { display: none !important; }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -121,8 +126,9 @@
   }
   
   .smartflow-gradient {
-    background: linear-gradient(135deg, var(--sf-gold) 0%, var(--sf-gold-light) 100%);
-    box-shadow: 0 4px 20px hsla(45, 88%, 62%, 0.2);
+    background: linear-gradient(135deg, rgba(13, 13, 13, 0.95) 0%, rgba(26, 22, 22, 0.95) 100%);
+    border: 1px solid hsla(45, 88%, 62%, 0.25);
+    box-shadow: inset 0 1px 0 hsla(45, 88%, 62%, 0.08), 0 4px 20px rgba(0, 0, 0, 0.4);
   }
   
   .smartflow-card {

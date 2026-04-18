@@ -75,12 +75,12 @@ export default function Sidebar() {
       <div className="smartflow-gradient p-6 border-b border-sf-gold/30 circuit-accent">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
-            <i className="fas fa-chart-line text-lg" style={{color: 'hsl(215, 85%, 35%)'}}></i>
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg" style={{background: 'linear-gradient(135deg, hsl(45,88%,62%) 0%, hsl(45,85%,52%) 100%)'}}>
+            <i className="fas fa-chart-line text-lg text-black"></i>
           </div>
             <div>
-              <h1 className="text-xl font-bold text-white">SmartFlow</h1>
-              <p className="text-xs text-blue-100">Systems Dashboard</p>
+              <h1 className="text-xl font-bold text-sf-gold">SmartFlow</h1>
+              <p className="text-xs text-muted-foreground">Systems Dashboard</p>
             </div>
           </div>
           <div className="lg:hidden">
@@ -122,8 +122,8 @@ export default function Sidebar() {
       {/* User Profile */}
       <div className="p-4 border-t border-sf-gold/30 circuit-accent">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 smartflow-gradient rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-medium">SF</span>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, hsl(45,88%,62%) 0%, hsl(45,85%,52%) 100%)'}}>
+            <span className="text-black text-sm font-bold">SF</span>
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-foreground truncate">SmartFlow</p>
