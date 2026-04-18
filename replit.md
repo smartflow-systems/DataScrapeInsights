@@ -31,6 +31,17 @@ Preferred communication style: Simple, everyday language.
 - **Schema Management**: Code-first approach with Drizzle migrations
 - **Query Builder**: Type-safe queries using Drizzle ORM with shared TypeScript types
 
+### Database Migration Workflow
+Three npm scripts are available for schema management:
+
+| Script | Command | When to use |
+|--------|---------|-------------|
+| `npm run db:push` | `drizzle-kit push` | **Development** — applies schema directly to the DB without generating migration files; fast for iterating on the schema locally. |
+| `npm run db:generate` | `drizzle-kit generate` | **Pre-deployment** — generates versioned SQL migration files in `./migrations/` that can be reviewed and committed to source control. |
+| `npm run db:migrate` | `drizzle-kit migrate` | **Deployment / CI** — applies all pending generated migration files in order; preferred for production where an audit trail matters. |
+
+Prefer `db:push` during local development and `db:generate` + `db:migrate` in production deployments.
+
 ### Database Schema Design
 - **scraped_data**: Stores web scraping results with JSON content and metadata
 - **scrapers**: Configuration for automated web scraping jobs
