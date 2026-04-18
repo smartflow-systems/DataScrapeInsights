@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
  * DataFlow Database Health Check
- * Run this after updating DATABASE_URL to verify everything is working.
+ * Run after updating DATABASE_URL to verify everything is working.
  * Usage: node scripts/db-verify.js
  */
 
-import pg from 'pg';
-const { Pool } = pg;
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
+
+neonConfig.webSocketConstructor = ws;
 
 const REQUIRED_TABLES = [
   'scraped_data',
@@ -27,10 +29,7 @@ async function verify() {
     process.exit(1);
   }
 
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-  });
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
   // Step 1: Test connection
   console.log('\n1️⃣  Testing connection...');
@@ -38,11 +37,10 @@ async function verify() {
   try {
     client = await pool.connect();
     const { rows } = await client.query(
-      'SELECT current_database(), current_user, version()'
+      'SELECT current_database(), current_user'
     );
     console.log(`   ✅  Connected to: ${rows[0].current_database}`);
     console.log(`   ✅  User: ${rows[0].current_user}`);
-    console.log(`   ✅  Host: ${new URL(process.env.DATABASE_URL).hostname}`);
   } catch (err) {
     console.error(`   ❌  Connection failed: ${err.message}`);
     console.error('\n👉  Fix: Update DATABASE_URL in Replit Secrets (🔒)');
@@ -65,11 +63,11 @@ async function verify() {
   for (const table of REQUIRED_TABLES) {
     if (existingNames.includes(table)) {
       const { rows: count } = await client.query(
-        `SELECT COUNT(*) FROM ${table}`
+        `SELECT COUNT(*) FROM "${table}"`
       );
       console.log(`   ✅  ${table} (${count[0].count} rows)`);
     } else {
-      console.log(`   ⚠️   ${table} — NOT FOUND (run db:push)`);
+      console.log(`   ⚠️   ${table} — NOT FOUND (run: npx drizzle-kit push)`);
       allTablesOk = false;
     }
   }
