@@ -1,0 +1,82 @@
+FS Style Kit — Share These With Your Other Agents
+
+Tell your other agents: "Copy these files into your repo root and drop the HTML snippet into your pages."
+File 1 — sfs-complete-theme.css
+
+This is your full design system: colours, glass cards, buttons, typography, layout, animations. The file already exists in this repo. Copy it as-is.
+
+Key things it gives every repo:
+
+    Gold/black/beige colour variables (--sf-gold, --sf-black, --sf-beige)
+    .glass-card, .sfs-glass-card, .sfs-flow-card glassmorphism styles
+    .btn-gold, .btn-ghost buttons
+    .text-gold-gradient heading effect
+    .fade-in-up + stagger animations
+    Navbar, footer, table, badge, input styles
+
+File 2 — sfs-circuit-flow.js
+
+Animated circuit-board background canvas. Copy as-is.
+File 3 — js/sfs-hamburger-menu.js
+
+Slide-in burger menu with all SFS branding, styles injected automatically. Copy as-is. (The menu links inside it can be updated per-project.)
+File 4 — static-logo.png
+
+Your logo image. Copy the PNG file across.
+HTML Boilerplate to Drop Into Every Page
+
+Give agents this exact snippet — it wires up all four files:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFlow Systems</title>
+  <link rel="shortcut icon" href="/static-logo.png">
+  <!-- SFS Design System -->
+  <link rel="stylesheet" href="/sfs-complete-theme.css">
+</head>
+<body>
+  <!-- Animated Circuit Background -->
+  <canvas id="circuit-canvas"></canvas>
+  <!-- ===================== YOUR PAGE CONTENT GOES HERE ===================== -->
+  <div class="container" style="position:relative;z-index:1;padding-top:5rem;">
+    <!-- Example Glass Card -->
+    <div class="glass-card">
+      <h2 class="text-gold-gradient">Your Title Here</h2>
+      <p>Your content here.</p>
+      <a href="#" class="btn btn-gold">Get Started</a>
+    </div>
+  </div>
+  <!-- ====================================================================== -->
+  <footer>
+    <div class="container">
+      <p>© <script>document.write(new Date().getFullYear())</script>
+        <span class="text-gold">SmartFlow Systems</span>. All rights reserved.
+      </p>
+    </div>
+  </footer>
+  <!-- Animated Background Script -->
+  <script src="/sfs-circuit-flow.js"></script>
+  <!-- Hamburger Menu (auto-injects itself — update links inside the JS per project) -->
+  <script src="/js/sfs-hamburger-menu.js"></script>
+</body>
+</html>
+
+Quick Reference — Class Names to Use
+What you want	Class to use
+Glass card	glass-card or sfs-glass-card
+Gold gradient heading	text-gold-gradient
+Gold text	text-gold
+Primary button	btn btn-gold
+Ghost/outline button	btn btn-ghost
+Fade in on load	fade-in-up
+Stagger multiple cards	add stagger-1 through stagger-6
+Container width	container
+Page section spacing	section
+What to tell your other agents
+
+    "Copy sfs-complete-theme.css, sfs-circuit-flow.js, js/sfs-hamburger-menu.js and static-logo.png into your repo root. Use the HTML boilerplate above as your page template. Do not change the colour variables — use them as-is. Update only the menu links inside sfs-hamburger-menu.js to match this project's pages."
+
+That's all they need — no build tools, no frameworks, pure HTML/CSS/JS that drops straight into any Replit repo.
