@@ -24,10 +24,22 @@ updates:
     pull-request-branch-name:
       separator: "/"
     versioning-strategy: increase
-    ignore:
-      # Ignore major version updates for specific packages
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+    groups:
+      # Patch and minor updates grouped together for low-risk automated merging
+      patch-and-minor:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Major (breaking) updates grouped separately for manual review
+      major-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "major"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -47,3 +59,17 @@ updates:
       - "automated"
     commit-message:
       prefix: "chore(actions)"
+    groups:
+      patch-and-minor:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "major"
