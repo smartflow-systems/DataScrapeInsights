@@ -226,3 +226,6 @@ lerna-debug.log*
 *.swp
 *.swo
 *~
+
+# Auto-sync runtime status
+.sync-status.json
