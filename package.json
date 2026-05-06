@@ -1,7 +1,7 @@
 {
   "name": "dataflow-dashboard",
   "version": "0.1.0",
-  "description": "DataFlow — web scraping, NL-to-SQL, and social-media analytics dashboard",
+  "description": "DataFlow \u2014 web scraping, NL-to-SQL, and social-media analytics dashboard",
   "type": "module",
   "private": true,
   "scripts": {
@@ -98,5 +98,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "overrides": {
+    "ip-address": "^10.2.0"
   }
 }
