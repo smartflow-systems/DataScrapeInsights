@@ -229,3 +229,4 @@ lerna-debug.log*
 
 # Auto-sync runtime status
 .sync-status.json
+.env.bak.*
