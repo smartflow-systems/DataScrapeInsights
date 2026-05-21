@@ -1,497 +1,133 @@
-# DataScrapeInsights
+# DataScrapeInsights (DataFlow)
 
-**AI-Powered Web Scraping & Data Analysis Platform** by SmartFlow Systems
+> A data analytics platform for product managers — scrape the web, analyse social media sentiment, and query your data using plain English.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-> Transform unstructured web data into actionable insights with AI-powered scraping, natural language SQL queries, and advanced analytics.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit-FFD700?style=for-the-badge&logo=replit&logoColor=black)](https://datascrapeinsights.replit.app)
+[![SmartFlow Systems](https://img.shields.io/badge/SmartFlow-Systems-0a0a0a?style=for-the-badge)](https://github.com/smartflow-systems)
 
 ---
 
-## Overview
+## What It Does
 
-DataScrapeInsights is a comprehensive data extraction and analysis platform that combines web scraping capabilities with AI-powered natural language processing. Convert plain English questions into SQL queries, scrape websites with intelligent extraction, and analyze social media sentiment - all through an intuitive dashboard.
-
-### Key Features
-
-- **Natural Language to SQL** - Ask questions in plain English, get SQL queries instantly
-- **Web Scraping Engine** - Extract data from any website with configurable scrapers
-- **AI-Powered Analysis** - OpenAI integration for intelligent data processing
-- **Social Media Analytics** - Sentiment analysis and engagement tracking
-- **Real-Time Dashboard** - Live stats, visualizations, and activity feeds
-- **Query History** - Save, manage, and replay your data queries
-- **Export Capabilities** - Download data in multiple formats (CSV, JSON, Excel)
-- **Smart Caching** - Memoized results for faster repeated queries
+DataFlow gives product managers and data teams a single dashboard to collect, query, and export data without needing an engineer. You can set up automated web scrapers to pull data from any site, run social media sentiment analysis across platforms, and ask questions in plain English — the app translates them into SQL and runs them against your database instantly. Results can be exported in multiple formats for reporting and presentations.
 
 ---
 
 ## Tech Stack
 
-### Frontend
-- **React 18** + TypeScript
-- **Vite** - Lightning-fast build tool
-- **TanStack Query** - Powerful data fetching
-- **Radix UI** - Accessible component primitives
-- **Tailwind CSS** - Utility-first styling
-- **Framer Motion** - Smooth animations
-- **Recharts** - Data visualizations
-- **Lucide Icons** - Beautiful icon system
-
-### Backend
-- **Node.js** + Express
-- **TypeScript** - Type-safe server code
-- **Drizzle ORM** - SQL database toolkit
-- **OpenAI API** - GPT-4 powered AI features
-- **WebSocket (ws)** - Real-time updates
-- **Helmet** - Security hardening
-- **Express Rate Limit** - API throttling
-
-### Database
-- **PostgreSQL** (via Neon serverless)
-- **Drizzle ORM** for migrations and queries
-- **Session storage** with connect-pg-simple
-
-### Security & Performance
-- **Helmet** - HTTP headers security
-- **Rate Limiting** - 100 requests per 15 minutes
-- **CORS** - Configured cross-origin policies
-- **Session Management** - Secure express-session
-- **Memoization** - Cached computation results
+| Layer | Technology |
+|---|---|
+| Language | TypeScript |
+| Runtime | Node.js 18+ |
+| Framework | Express.js (backend) + Vite (frontend) |
+| Frontend | React, Shadcn/ui, Radix UI, Tailwind CSS, TanStack Query, Wouter |
+| Database / Storage | PostgreSQL via Neon (serverless) — Drizzle ORM |
+| Key packages | OpenAI (NL-to-SQL + sentiment), Zod, React Hook Form, express-rate-limit, express-session |
 
 ---
 
-## Installation
+## How to Run Locally
 
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL database (or Neon account)
-- OpenAI API key
-
-### Quick Start
-
-1. **Clone the repository**
 ```bash
+# 1. Clone the repo
 git clone https://github.com/smartflow-systems/DataScrapeInsights.git
 cd DataScrapeInsights
-```
 
-2. **Install dependencies**
-```bash
+# 2. Install dependencies
 npm install
-```
 
-3. **Configure environment variables**
-```bash
+# 3. Copy the environment variables file and fill in your values
 cp .env.example .env
-```
 
-Edit `.env` with your credentials:
-```env
-# Server Configuration
-NODE_ENV=development
-PORT=5000
+# 4. Push the database schema
+npm run migrate
 
-# Database Configuration
-DATABASE_URL="postgresql://user:password@localhost:5432/datascrape"
-
-# OpenAI API Configuration
-OPENAI_API_KEY=sk-your-openai-api-key-here
-
-# Session & Security
-SESSION_SECRET=your-random-session-secret-here
-
-# Rate Limiting
-API_RATE_LIMIT_WINDOW_MS=900000
-API_RATE_LIMIT_MAX=100
-```
-
-4. **Initialize the database**
-```bash
-npm run db:push
-```
-
-5. **Start development server**
-```bash
+# 5. Start the development server
 npm run dev
 ```
 
-Visit `http://localhost:5000` 🎉
+The app will be available at `http://localhost:5000`.
 
 ---
 
 ## Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `NODE_ENV` | No | `development` | Environment mode |
-| `PORT` | No | `5000` | Server port |
-| `DATABASE_URL` | Yes | - | PostgreSQL connection string |
-| `OPENAI_API_KEY` | Yes | - | OpenAI API key for AI features |
-| `SESSION_SECRET` | Yes | - | Secret for session encryption |
-| `API_RATE_LIMIT_WINDOW_MS` | No | `900000` | Rate limit window (15 min) |
-| `API_RATE_LIMIT_MAX` | No | `100` | Max requests per window |
+| Variable | Required | Description | Example |
+|---|---|---|---|
+| `DATABASE_URL` | Yes | Neon PostgreSQL connection string | `postgresql://user:pass@host.neon.tech/db?sslmode=require` |
+| `OPENAI_API_KEY` | Yes | OpenAI key — powers NL-to-SQL translation and sentiment analysis | `sk-proj-abc123` |
+| `SESSION_SECRET` | Yes | Secret for signing user sessions | `random-session-secret` |
+| `PORT` | No | Server port | `5000` |
+| `NODE_ENV` | No | Environment (`development` / `production`) | `development` |
 
 ---
 
-## Features Deep Dive
+## API Endpoints
 
-### 1. Natural Language to SQL
-
-Convert plain English questions into executable SQL queries:
-
-**Example:**
-```
-User: "Show me all users who signed up in the last 30 days"
-AI: SELECT * FROM users WHERE created_at >= NOW() - INTERVAL '30 days'
-```
-
-**API Endpoint:**
-```typescript
-POST /api/nl-to-sql
-{
-  "naturalLanguageQuery": "Show me total revenue by month"
-}
-```
-
-### 2. Web Scraping Engine
-
-Configure and run web scrapers with custom selectors:
-
-**Features:**
-- CSS selector-based extraction
-- JavaScript rendering support
-- Rate limiting and retry logic
-- Data normalization
-- Export to multiple formats
-
-**API Endpoint:**
-```typescript
-POST /api/scrapers
-{
-  "name": "Product Scraper",
-  "url": "https://example.com/products",
-  "selectors": {
-    "title": ".product-title",
-    "price": ".product-price"
-  }
-}
-```
-
-### 3. Social Media Analytics
-
-Analyze sentiment and engagement from social media data:
-
-**Capabilities:**
-- Sentiment analysis (positive/negative/neutral)
-- Engagement rate calculation
-- Trend detection
-- Influencer identification
-
-**API Endpoint:**
-```typescript
-POST /api/social-media/analyze
-{
-  "platform": "twitter",
-  "query": "#AI"
-}
-```
-
-### 4. Real-Time Dashboard
-
-Monitor your data operations in real-time:
-
-- **Active Scrapers** - Running scraper jobs
-- **Query History** - Recent SQL queries
-- **Data Exports** - Download status
-- **Activity Feed** - Latest system events
+| Method | Route | Auth required | Description |
+|---|---|---|---|
+| `GET` | `/health` | No | Health check |
+| `GET` | `/api/stats` | No | Dashboard summary stats |
+| `POST` | `/api/nl-to-sql` | No | Translate a natural language question into SQL and run it |
+| `POST` | `/api/queries/:id/execute` | No | Re-execute a saved query |
+| `POST` | `/api/queries/:id/explain` | No | Get an AI explanation of a query's results |
+| `POST` | `/api/queries/:id/save` | No | Save a query for later use |
+| `GET` | `/api/queries` | No | List all saved queries |
+| `POST` | `/api/scrapers` | No | Create a new web scraper configuration |
+| `GET` | `/api/scrapers` | No | List all scrapers |
+| `POST` | `/api/scrapers/test` | No | Test a scraper without saving results |
+| `POST` | `/api/scrapers/:id/run` | No | Run a scraper and store results |
+| `GET` | `/api/social-media` | No | List collected social media posts |
+| `POST` | `/api/social-media/:id/analyze` | No | Run sentiment analysis on a post |
+| `POST` | `/api/exports` | No | Create a data export job |
+| `GET` | `/api/exports` | No | List all exports |
+| `GET` | `/api/activities` | No | Activity log of all user and system actions |
 
 ---
 
-## API Reference
+## How It Connects to SmartFlow Systems
 
-### Dashboard Stats
-```http
-GET /api/stats
-```
-Returns:
-```json
-{
-  "totalScrapers": 15,
-  "totalQueries": 142,
-  "totalExports": 23,
-  "recentActivity": [...]
-}
-```
-
-### Natural Language to SQL
-```http
-POST /api/nl-to-sql
-Content-Type: application/json
-
-{
-  "naturalLanguageQuery": "string"
-}
-```
-
-### Web Scraper Management
-```http
-GET    /api/scrapers          # List all scrapers
-POST   /api/scrapers          # Create scraper
-GET    /api/scrapers/:id      # Get scraper details
-PUT    /api/scrapers/:id      # Update scraper
-DELETE /api/scrapers/:id      # Delete scraper
-POST   /api/scrapers/:id/run  # Run scraper
-```
-
-### Query History
-```http
-GET    /api/queries           # List saved queries
-POST   /api/queries           # Save query
-GET    /api/queries/:id       # Get query
-DELETE /api/queries/:id       # Delete query
-POST   /api/queries/:id/execute  # Re-run query
-```
-
-### Export Management
-```http
-GET    /api/exports           # List exports
-POST   /api/exports           # Create export
-GET    /api/exports/:id       # Download export
-DELETE /api/exports/:id       # Delete export
-```
+- **Main hub** — [`smartflow-systems/SmartFlowSite`](https://github.com/smartflow-systems/SmartFlowSite) links to this repo's live demo from the DataFlow Insights product card on the homepage.
+- **Design system** — follows the SFS design system (gold `#FFD700` on dark `#0a0a0a`). See [`sfs-claude-skills`](https://github.com/smartflow-systems/sfs-claude-skills) for the full token reference.
+- **Stripe** — Not used in this repo.
+- **Other integrations** — OpenAI GPT is a core dependency: powers natural language to SQL translation and social media sentiment scoring. Neon serverless PostgreSQL stores scraped data, queries, social media posts, exports, and the activity log.
 
 ---
 
-## Database Schema
+## Live Demo
 
-### Scrapers Table
-```sql
-CREATE TABLE scrapers (
-  id UUID PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  url TEXT NOT NULL,
-  selectors JSONB NOT NULL,
-  schedule VARCHAR(50),
-  status VARCHAR(20),
-  last_run_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
-
-### Queries Table
-```sql
-CREATE TABLE queries (
-  id UUID PRIMARY KEY,
-  natural_language_query TEXT NOT NULL,
-  sql_query TEXT NOT NULL,
-  results JSONB,
-  is_saved BOOLEAN DEFAULT false,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
-
-### Activities Table
-```sql
-CREATE TABLE activities (
-  id UUID PRIMARY KEY,
-  type VARCHAR(50) NOT NULL,
-  message TEXT NOT NULL,
-  metadata JSONB,
-  created_at TIMESTAMP DEFAULT NOW()
-);
-```
+**[datascrapeinsights.replit.app](https://datascrapeinsights.replit.app)** — Live platform: set up a scraper, run a natural language query, and export results.
 
 ---
 
-## Development
+## Design System
 
-### Available Scripts
+This repo follows the SmartFlow Systems design system.
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build for production |
-| `npm start` | Run production server |
-| `npm run check` | Type-check TypeScript |
-| `npm run db:push` | Push database schema changes |
-| `npm run sync` | Auto-sync with git |
-
-### Auto-sync to GitHub
-
-`npm run sync` (which runs `scripts/auto-sync.sh`) commits any local changes,
-pulls the remote, and pushes back to GitHub non-interactively.
-
-Required:
-- `SFS_PAT` — a GitHub Personal Access Token with `repo` push access, stored in
-  Replit Secrets. Without it the script exits with a clear error.
-
-Optional:
-- `SFS_USERNAME` — GitHub username to send with the token. Defaults to
-  `x-access-token`, which works for both classic and fine-grained PATs.
-
-How auth works: a tiny credential helper at `scripts/git-credential-sfs.sh`
-feeds `SFS_PAT` to Git on demand. It is registered in the local repo config
-(`credential.helper`), so plain `git push origin main` from the shell also
-works without prompting. The auto-sync script additionally disables
-`GIT_ASKPASS` to defeat Replit's interactive prompt helper.
-
-### Project Structure
-
-```
-DataScrapeInsights/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/     # UI components
-│   │   ├── pages/          # Route pages
-│   │   ├── hooks/          # Custom React hooks
-│   │   └── App.tsx         # Main app component
-│   └── index.html
-├── server/                 # Express backend (sole entry point)
-│   ├── index.ts            # Server entry point — the only backend entrypoint
-│   ├── routes.ts           # API routes
-│   ├── storage.ts          # Database layer
-│   ├── db.ts               # Database connection
-│   ├── services/           # Business logic
-│   │   └── openai.ts       # AI integrations
-│   └── middleware/         # Express middleware
-│       └── security.ts     # Security configs
-├── shared/                 # Shared types/schemas
-├── .env.example            # Environment template
-├── package.json
-└── README.md
-```
-
-> **Note:** `server/index.ts` is the single backend entry point for this application. It serves both the Express REST API and the Vite-built React frontend on port 5000 via the "Server" workflow (`npx tsx server/index.ts`).
+- Brand colours: Gold `#FFD700` on dark background `#0a0a0a`
+- Typography: Inter (headings), system-ui (body)
+- Full token reference and component rules: [`sfs-claude-skills/sfs-design-system/SKILL.md`](https://github.com/smartflow-systems/sfs-claude-skills/blob/main/sfs-design-system/SKILL.md)
 
 ---
 
-## Deployment
+## Contact
 
-### Production Build
-
-```bash
-# Build frontend and backend
-npm run build
-
-# Start production server
-npm start
-```
-
-### Docker Deployment
-
-*Coming soon - Dockerfile will be added*
-
-### Environment Setup
-
-1. Set `NODE_ENV=production`
-2. Use production database URL
-3. Configure HTTPS reverse proxy (nginx/Caddy)
-4. Set secure `SESSION_SECRET`
-5. Enable rate limiting
-6. Configure CORS for your domain
+| | |
+|---|---|
+| Sales enquiries | [sales@smartflowsystems.com](mailto:sales@smartflowsystems.com) |
+| Book a demo | [calendly.com/boweazy123](https://calendly.com/boweazy123) |
 
 ---
 
-## Security
+## Part of the SmartFlow Systems Suite
 
-### Best Practices Implemented
+SmartFlow Systems builds automation tools for modern businesses — booking, CRM, e-commerce, AI bots, analytics, and more.
 
-- ✅ **Helmet** - HTTP security headers
-- ✅ **Rate Limiting** - API throttling (100 req/15min)
-- ✅ **CORS** - Cross-origin policy enforcement
-- ✅ **Session Security** - Encrypted session storage
-- ✅ **Input Validation** - Zod schema validation
-- ✅ **SQL Injection Prevention** - Parameterized queries via Drizzle ORM
-- ✅ **XSS Protection** - React auto-escaping
-
-### Recommendations
-
-- Rotate `SESSION_SECRET` regularly
-- Use environment-specific API keys
-- Enable HTTPS in production
-- Implement authentication for production use
-- Monitor rate limit violations
-- Regular dependency updates
+| | |
+|---|---|
+| Website | [smartflowsystems.replit.app](https://smartflowsystems.replit.app) |
+| All repos | [github.com/smartflow-systems](https://github.com/smartflow-systems) |
 
 ---
 
-## Roadmap
-
-### Current Version: 1.0.0
-
-### Planned Features
-
-- [ ] **User Authentication** - Multi-user support with role-based access
-- [ ] **Scheduled Scrapers** - Cron-based automated scraping
-- [ ] **Advanced Exports** - PDF, Excel with charts
-- [ ] **Webhook Support** - Real-time data push to external systems
-- [ ] **API Documentation** - Interactive Swagger/OpenAPI docs
-- [ ] **Data Visualization Builder** - Drag-drop chart creator
-- [ ] **Team Collaboration** - Shared queries and scrapers
-- [ ] **Docker Support** - Official Docker images
-- [ ] **CI/CD Pipeline** - Automated testing and deployment
-
----
-
-## Known Issues & TODOs
-
-### High Priority
-- [ ] Implement actual file generation in background (server/routes.ts:286)
-- [ ] Calculate actual changes for scraped URLs (server/storage.ts:94)
-- [ ] Add Dockerfile for containerization
-- [ ] Add comprehensive test suite
-
-### Medium Priority
-- [ ] Add user authentication system
-- [ ] Implement WebSocket real-time updates
-- [ ] Add export progress tracking
-- [ ] Improve error handling and logging
-
----
-
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Maintain test coverage above 80%
-- Use conventional commits
-- Update documentation for new features
-
----
-
-## License
-
-MIT License - see [LICENSE](LICENSE) file for details
-
----
-
-## Support
-
-- **Documentation**: [Coming Soon]
-- **Issues**: [GitHub Issues](https://github.com/smartflow-systems/DataScrapeInsights/issues)
-- **Email**: support@smartflowsystems.com
-
----
-
-## Acknowledgments
-
-- Built with [React](https://react.dev/)
-- Powered by [OpenAI](https://openai.com/)
-- UI Components by [Radix UI](https://www.radix-ui.com/)
-- Styling with [Tailwind CSS](https://tailwindcss.com/)
-
----
-
-**Made with ❤️ by SmartFlow Systems**
-
-Part of the SmartFlow Systems ecosystem - Building intelligent automation tools for the modern web.
+*Built by SmartFlow Systems.*
